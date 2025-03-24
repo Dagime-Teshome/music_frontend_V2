@@ -41,3 +41,7 @@ export type UpdateSongAction = {
   id: string;
   song: Omit<Song, "id" | "createdAt" | "updated">;
 };
+
+export type smallTheme = {
+  background?: string;
+};

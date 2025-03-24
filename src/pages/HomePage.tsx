@@ -6,7 +6,7 @@ import { CirclePlus, Music } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Theme } from "../styles/theme";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import { SearchType } from "../types/sharedTypes";
+import { SearchType, smallTheme } from "../types/sharedTypes";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import BarLoader from "react-spinners/BarLoader";
@@ -57,7 +57,7 @@ const HomePage: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isLoading = useAppSelector((state) => state.songs.loading);
-  const theme = useTheme();
+  const theme: smallTheme = useTheme();
 
   const override: CSSProperties = {
     display: "block",
