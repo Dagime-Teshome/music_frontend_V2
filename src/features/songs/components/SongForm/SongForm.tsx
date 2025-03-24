@@ -114,7 +114,6 @@ const SongForm: React.FC = () => {
       [name]: value,
     }));
 
-    // Clear error when user types
     if (errors[name as keyof typeof errors]) {
       setErrors((prev) => ({
         ...prev,

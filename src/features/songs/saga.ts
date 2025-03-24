@@ -9,10 +9,8 @@ import {
   updateSong,
   deleteSong,
 } from "./slice";
-// import  fetchStatsRequest  from "../stats/slice";
 import { Song } from "./types";
 
-// API functions would be imported from your api folder
 import {
   fetchSongs as fetchSongsApi,
   addSong as addSongApi,
@@ -25,7 +23,6 @@ import {
   UpdateSongAction,
 } from "../../types/sharedTypes";
 
-// Action creator for fetching songs (since we don't have a separate action for this in our simplified slice)
 export const fetchSongs = () => ({ type: "songs/fetchSongs" });
 
 function* fetchSongsSaga() {

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, CSSProperties } from "react";
 import styled from "@emotion/styled";
 import SongCard from "../features/songs/components/SongCard/SongCard";
 import FilterBar from "../features/filters/components/FilterBar";
@@ -9,6 +9,8 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { SearchType } from "../types/sharedTypes";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import BarLoader from "react-spinners/BarLoader";
+import { useTheme } from "@emotion/react";
 
 const PageHeader = styled.div`
   display: flex;
@@ -46,15 +48,28 @@ const IconContainer = styled.div<{ theme?: Theme }>`
   color: ${(props) => props.theme.tertiaryText};
 `;
 
+const LoadingContainer = styled.div`
+  height: 20px;
+`;
+
 const HomePage: React.FC = () => {
   const songsList = useAppSelector((state) => state.songs.data);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isLoading = useAppSelector((state) => state.songs.loading);
+  const theme = useTheme();
+
+  const override: CSSProperties = {
+    display: "block",
+    margin: "20px 0",
+    borderColor: "white",
+    padding: "0 20px",
+  };
 
   useEffect(() => {
     dispatch({ type: "saga/fetchStats" });
     dispatch({ type: "saga/fetchSongs" });
-  }, [dispatch]);
+  }, [dispatch, theme]);
 
   const onDelete = (id?: string) => {
     dispatch({ type: "saga/deleteSong", payload: id });
@@ -78,7 +93,14 @@ const HomePage: React.FC = () => {
       </PageHeader>
 
       <FilterBar onFilterChange={handleFilterChange} />
-
+      <LoadingContainer>
+        <BarLoader
+          color={theme.background === "#ffffff" ? "#121212" : "#ffffff"}
+          loading={isLoading}
+          cssOverride={override}
+          width={"100%"}
+        />
+      </LoadingContainer>
       {songsList.length > 0 ? (
         <SongGrid>
           {songsList.map((song) => (
