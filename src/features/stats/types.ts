@@ -11,8 +11,6 @@ export interface Stats {
 
 export type StatsState = {
   data: StatReturnType;
-  loading: boolean;
-  error: string | null;
 };
 
 export type StatObject = {

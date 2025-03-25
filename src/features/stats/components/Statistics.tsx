@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { Theme } from "../../../styles/theme";
 import { Song } from "../../songs/types";
 import { useAppSelector } from "../../../hooks/hooks";
+import { useDispatch } from "react-redux";
 
 const PageHeader = styled.div<{ theme?: Theme }>`
   margin-bottom: 2rem;
@@ -117,11 +118,10 @@ const Statistics: React.FC = () => {
   });
   const songs = useAppSelector((state) => state.songs.data);
   const stats = useAppSelector((state) => state.stats.data);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (songs.length === 0) {
-      return;
-    }
+    dispatch({ type: "saga/fetchStats" });
 
     const uniqueArtists = [...new Set(songs.map((song: Song) => song.artist))];
     const uniqueAlbums = [...new Set(songs.map((song: Song) => song.album))];
