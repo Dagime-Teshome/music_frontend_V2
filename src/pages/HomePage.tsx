@@ -67,8 +67,8 @@ const HomePage: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch({ type: "saga/fetchStats" });
     dispatch({ type: "saga/fetchSongs" });
+    dispatch({ type: "saga/fetchGenres" });
   }, [dispatch, theme]);
 
   const onDelete = (id?: string) => {
