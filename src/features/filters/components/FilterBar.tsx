@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "@emotion/styled";
 import { ChevronDown, Search } from "lucide-react";
-import { getGenres } from "../../../api/filterApi";
 import { SearchType, Theme } from "../../../types/sharedTypes";
+import { useAppSelector } from "../../../hooks/hooks";
 
 interface FilterBarProps {
   onFilterChange: (filters: SearchType) => void;
@@ -84,17 +84,8 @@ const DropdownIcon = styled.div<{ theme?: Theme }>`
 const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterGenre, setFilterGenre] = useState("All");
-  const [genres, setGenres] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getGenresList = async () => {
-      const loadedGenres = await getGenres();
-      setGenres(loadedGenres.data);
-      setLoading(false);
-    };
-    getGenresList();
-  }, []);
+  const isLoading = useAppSelector((state) => state.songs.loading);
+  const genres = useAppSelector((state) => state.songs.genres);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(() => {
@@ -127,7 +118,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFilterChange }) => {
         <GenreSelect
           value={filterGenre}
           onChange={handleGenreChange}
-          disabled={loading}
+          disabled={isLoading}
         >
           <option value="All">All Genres</option>
           {genres.map((genre) => (

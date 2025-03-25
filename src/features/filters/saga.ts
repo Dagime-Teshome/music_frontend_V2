@@ -3,13 +3,21 @@ import { filterSongs } from "../../api/filterApi";
 import { SearchType, ReturnType } from "../../types/sharedTypes";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { setSongs } from "../songs/slice";
+import { setLoading, setError } from "../songs/slice";
 
 function* filtersSagas(action: PayloadAction<SearchType>) {
+  yield put(setLoading(true));
   try {
     const responseData: ReturnType = yield call(filterSongs, action.payload);
     yield put(setSongs(responseData.data));
   } catch (error) {
-    console.error(error);
+    let errorMessage = "An unknown error occurred";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+      yield put(setError(errorMessage));
+    }
+  } finally {
+    yield put(setLoading(false));
   }
 }
 
