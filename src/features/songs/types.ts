@@ -10,6 +10,7 @@ export type Song = {
 
 export type SongsState = {
   data: Song[];
+  genres: string[];
   loading: boolean;
   error: string | null;
 };

@@ -8,6 +8,7 @@ import {
   addSong,
   updateSong,
   deleteSong,
+  setGenres,
 } from "./slice";
 import { Song } from "./types";
 
@@ -22,8 +23,7 @@ import {
   ReturnType,
   UpdateSongAction,
 } from "../../types/sharedTypes";
-
-export const fetchSongs = () => ({ type: "songs/fetchSongs" });
+import { getGenres } from "../../api/filterApi";
 
 function* fetchSongsSaga() {
   yield put(setLoading(true));
@@ -100,9 +100,26 @@ function* deleteSongSaga(action: PayloadAction<string>) {
   }
 }
 
+function* fetchGenresSaga() {
+  yield put(setLoading(true));
+  try {
+    const response: ReturnType = yield call(getGenres);
+    yield put(setGenres(response.data));
+  } catch (error: unknown) {
+    let errorMessage = "An unknown error occurred";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    yield put(setError(errorMessage));
+  } finally {
+    yield put(setLoading(false));
+  }
+}
+
 export function* songsSagas() {
   yield takeLatest("saga/fetchSongs", fetchSongsSaga);
   yield takeLatest("saga/createSong", addSongSaga);
   yield takeLatest("saga/updateSong", updateSongSaga);
   yield takeLatest("saga/deleteSong", deleteSongSaga);
+  yield takeLatest("saga/fetchGenres", fetchGenresSaga);
 }

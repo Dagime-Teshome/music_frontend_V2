@@ -3,6 +3,7 @@ import { Song, SongsState } from "./types";
 
 const initialState: SongsState = {
   data: [],
+  genres: [],
   loading: false,
   error: null,
 };
@@ -24,7 +25,6 @@ const songsSlice = createSlice({
       state.data.push(action.payload);
     },
     updateSong: (state, action: PayloadAction<Song>) => {
-      console.log("you being called?");
       const index = state.data.findIndex(
         (song) => song.id === action.payload.id
       );
@@ -34,6 +34,9 @@ const songsSlice = createSlice({
     },
     deleteSong: (state, action: PayloadAction<string>) => {
       state.data = state.data.filter((song) => song.id !== action.payload);
+    },
+    setGenres: (state, action: PayloadAction<string[]>) => {
+      state.genres = action.payload;
     },
   },
 });
@@ -45,5 +48,6 @@ export const {
   addSong,
   updateSong,
   deleteSong,
+  setGenres,
 } = songsSlice.actions;
 export default songsSlice.reducer;
